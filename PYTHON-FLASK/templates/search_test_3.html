@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search and Calendar</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+  <!-- Search Bar -->
+  <form id="searchForm">
+    <label for="stockCodeInput">股票代碼</label>
+    <input type="text" name="stock_code" id="stockCodeInput" placeholder="Enter your query">
+  
+    <!-- Calendar 1-->
+    <label for="calendar1">起始日期</label>
+    <input type="date" id="calendar1">
+  
+    <!-- Calendar 2 -->
+    <label for="calendar2">結束日期</label>
+    <input type="date" id="calendar2"> 
+  
+    <!-- Search Button -->
+    <button type="submit">Search</button>
+  </form>
+
+  <h1>股票k線圖</h1>
+
+  <div id="chart"></div>
+
+  <table>
+    <tr>
+      <th></th>
+      {% for stock_code_data in data %}
+      <tr>
+        <td>{{ stock_code_data }}</td>
+      </tr>
+      {% endfor %}
+    </tr> 
+  </table>
+
+  <script>
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+      e.preventDefault(); // Prevent the form from submitting
+
+      // Get the values from the input fields
+      var stockCode = document.getElementById("stockCodeInput").value;
+      var startDate = document.getElementById("calendar1").value;
+      var endDate = document.getElementById("calendar2").value;
+
+      // Perform some action based on the values, e.g., validate or process them
+
+      // Redirect to the search URL with the parameters
+      window.location.href = `/search?stock_code=${stockCode}&start_date=${startDate}&end_date=${endDate}`;
+    });
+
+    // Render the chart using the JSON data
+    var chartJson = JSON.parse('{{ chart | safe }}');
+    Plotly.react('chart', chartJson.data, chartJson.layout);
+  </script>
+
+</body>
+</html>
+
+
+
+<!--   <script>
+    function performSearch() {
+      // Get the values from the input fields
+      var stockCode = document.getElementById("stockCodeInput").value;
+      var startDate = document.getElementById("calendar1").value;
+      var endDate = document.getElementById("calendar2").value;
+
+      // Perform some action based on the values, e.g., validate or process them
+
+      // Redirect to the search URL with the parameters
+      window.location.href = `/search?stock_code=${stockCode}&start_date=${startDate}&end_date=${endDate}`;
+    }
+  </script> -->
